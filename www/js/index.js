@@ -40,19 +40,31 @@ var app = {
             minutes: 20
         }, function() {
             console.log('success');
+
+            window.setTimeout(function() {
+                window.plugins.webintent.deleteAlarm({
+                    hours: 10,
+                    minutes: 20
+                }, function() {
+                    console.log('success');
+                }, function() {
+                    console.log('fail');
+                });
+            }, 1000);
         }, function() {
             console.log('fail');
-        });
 
-        var time = 1473421490429;
-        window.plugins.webintent.addAlarm({
-            time: time
-        }, function() {
-            console.log('success');
-        }, function() {
-            console.log('fail');
+            window.setTimeout(function() {
+                window.plugins.webintent.deleteAlarm({
+                    hours: 10,
+                    minutes: 20
+                }, function() {
+                    console.log('success');
+                }, function() {
+                    console.log('fail');
+                });
+            }, 1000);
         });
-
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {

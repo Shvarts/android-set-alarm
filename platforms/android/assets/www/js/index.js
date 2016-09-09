@@ -36,20 +36,35 @@ var app = {
         app.receivedEvent('deviceready');
 
         window.plugins.webintent.setAlarm({
-            hours:11,
-            minutes:30
+            hours: 10,
+            minutes: 20
         }, function() {
             console.log('success');
+
+            window.setTimeout(function() {
+                window.plugins.webintent.deleteAlarm({
+                    hours: 10,
+                    minutes: 20
+                }, function() {
+                    console.log('success');
+                }, function() {
+                    console.log('fail');
+                });
+            }, 1000);
         }, function() {
             console.log('fail');
-        });
 
-        window.plugins.webintent.sendBroadcast({}, function() {
-            console.log('success');
-        }, function() {
-            console.log('fail');
+            window.setTimeout(function() {
+                window.plugins.webintent.deleteAlarm({
+                    hours: 10,
+                    minutes: 20
+                }, function() {
+                    console.log('success');
+                }, function() {
+                    console.log('fail');
+                });
+            }, 1000);
         });
-
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
