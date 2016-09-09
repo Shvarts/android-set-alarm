@@ -26,6 +26,22 @@ cordova.define("com.borismus.webintent.WebIntent", function(require, exports, mo
         }, 'WebIntent', 'setAlarm', [params]);
     };
 
+    WebIntent.prototype.addAlarm = function(params, success, fail) {
+        return cordova.exec(function(args) {
+            success(args);
+        }, function(args) {
+            fail(args);
+        }, 'WebIntent', 'addAlarm', [params]);
+    };
+
+    WebIntent.prototype.deleteAlarm = function(params, success, fail) {
+        return cordova.exec(function(args) {
+            success(args);
+        }, function(args) {
+            fail(args);
+        }, 'WebIntent', 'deleteAlarm', [params]);
+    };
+
     window.webintent = new WebIntent();
 
     // backwards compatibility

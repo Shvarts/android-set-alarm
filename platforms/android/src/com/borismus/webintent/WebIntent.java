@@ -33,9 +33,17 @@ public class WebIntent extends CordovaPlugin {
         try {
             if (action.equals("setAlarm")) {
                 JSONObject obj = args.getJSONObject(0);
-                setAlarm(obj.getInt("hours"), obj.getInt("minutes"));
+                setAlarm(obj.getInt("time"), obj.getInt("hours"), obj.getInt("minutes"));
                 callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
                 return true;
+            } else if (action.equals("addAlarm")) {
+                JSONObject obj = args.getJSONObject(0);
+                addAlarm(obj.getInt("time"));
+                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
+            } else if (action.equals("deleteAlarm")) {
+                JSONObject obj = args.getJSONObject(0);
+                deleteAlarm(obj.getInt("time"));
+                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
             }
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.INVALID_ACTION));
             return false;
@@ -47,7 +55,7 @@ public class WebIntent extends CordovaPlugin {
         }
     }
 
-    void setAlarm(Integer hours, Integer minutes) {
+    void setAlarm(Integer time, Integer hours, Integer minutes) {
         Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
         i.getExtras();
         i.putExtra(AlarmClock.EXTRA_MESSAGE, "New Alarm");
@@ -55,5 +63,23 @@ public class WebIntent extends CordovaPlugin {
         i.putExtra(AlarmClock.EXTRA_MINUTES, minutes);
 
         ((CordovaActivity)this.cordova.getActivity()).startActivity(i);
+    }
+
+    void addAlarm(Integer time) {
+        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, time, intent, 0);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Activity.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+    }
+
+    void deleteAlarm(Integer time) {
+        // pendingIntent = PendingIntent.getActivity(mContext, id, i, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent intent = new Intent(this, AlarmReceiverActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, time, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        pendingIntent.cancel();
+        alarmManager.cancel(pendingIntent);
     }
 }

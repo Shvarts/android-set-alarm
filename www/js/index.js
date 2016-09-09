@@ -43,6 +43,16 @@ var app = {
         }, function() {
             console.log('fail');
         });
+
+        var time = 1473421490429;
+        window.plugins.webintent.addAlarm({
+            time: time
+        }, function() {
+            console.log('success');
+        }, function() {
+            console.log('fail');
+        });
+
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
